@@ -1,26 +1,24 @@
 %define _hardened_build 1
 Name:           etherape
-Version:        0.9.15
-Release:        3%{?dist}
+Version:        0.9.18
+Release:        1%{?dist}
 Summary:        Graphical network monitor for Unix
 
-Group:          Applications/System
 License:        GPLv2+
 URL:            http://etherape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/sourceforge/etherape/%{name}-%{version}.tar.gz
 Source1:        etherape.pam
 Source2:        etherape.console
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libpcap-devel, libglade2-devel
-BuildRequires:  gettext, desktop-file-utils, libgnomeui-devel 
+BuildRequires:  gettext, desktop-file-utils, libgnomeui-devel
 BuildRequires:  gnome-doc-utils
 BuildRequires:  scrollkeeper
 Requires(post): scrollkeeper
 Requires(postun): scrollkeeper
 
 %description
-EtherApe is a graphical network monitor modeled after etherman. 
+EtherApe is a graphical network monitor modeled after etherman.
 
 %prep
 %setup -q
@@ -32,7 +30,6 @@ make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d
@@ -46,11 +43,7 @@ ln -s consolehelper $RPM_BUILD_ROOT/%{_bindir}/etherape
 desktop-file-install --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
     ${RPM_BUILD_ROOT}%{_datadir}/applications/etherape.desktop
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc ABOUT-NLS AUTHORS ChangeLog COPYING FAQ NEWS OVERVIEW README README.bugs TODO
 
 
@@ -77,6 +70,12 @@ scrollkeeper-update -q || :
 
 
 %changelog
+* Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.18-1
+- Update to 0.9.18
+
+* Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.15-4
+- Modernize spec for AlmaLinux 10: remove BuildRoot, %%clean, %%defattr, Group tag
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.15-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
@@ -141,7 +140,7 @@ scrollkeeper-update -q || :
 - fix license tag
 
 * Sat Apr 19 2008 Michael Rice <errr@errr-online.com> - 0.9.7-8
-- fix ln -s 
+- fix ln -s
 
 * Sat Apr 19 2008 Michael Rice <errr[AT]errr-online.com> - 0.9.7-7
 - Fix #442131 problems running as non root
@@ -161,7 +160,7 @@ scrollkeeper-update -q || :
 - Fix .desktop X category
 
 * Wed Jan 31 2007 Michael Rice <errr[AT]errr-online.com> - 0.9.7-2
-- Fix dup BR's 
+- Fix dup BR's
 - add missing BR for libgnomeui-devel scrollkeeper
 - removed %%{buildroot}. in choice of other
 
