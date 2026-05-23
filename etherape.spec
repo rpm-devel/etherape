@@ -1,4 +1,4 @@
-%define _hardened_build 1
+%global _hardened_build 1
 Name:           etherape
 Version:        0.9.18
 Release:        1%{?dist}
@@ -30,18 +30,18 @@ make %{?_smp_mflags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d
-install -m 644 %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/pam.d/etherape
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/security/console.apps
-install -m 644 %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/security/console.apps/etherape
-mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-ln -s consolehelper $RPM_BUILD_ROOT/%{_bindir}/etherape
+mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
+install -m 644 %{SOURCE1} %{buildroot}/%{_sysconfdir}/pam.d/etherape
+mkdir -p %{buildroot}/%{_sysconfdir}/security/console.apps
+install -m 644 %{SOURCE2} %{buildroot}/%{_sysconfdir}/security/console.apps/etherape
+mkdir -p %{buildroot}/%{_bindir}
+ln -s consolehelper %{buildroot}/%{_bindir}/etherape
 
 %find_lang %{name}
-desktop-file-install --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-    ${RPM_BUILD_ROOT}%{_datadir}/applications/etherape.desktop
+desktop-file-install --dir %{buildroot}%{_datadir}/applications \
+    %{buildroot}%{_datadir}/applications/etherape.desktop
 
 %files -f %{name}.lang
 %doc ABOUT-NLS AUTHORS ChangeLog COPYING FAQ NEWS OVERVIEW README README.bugs TODO
@@ -70,6 +70,9 @@ scrollkeeper-update -q || :
 
 
 %changelog
+* Fri May 22 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.18-1
+- Fix spec violations: %global for constants, use %{buildroot}
+
 * Fri Apr 24 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.18-1
 - Update to 0.9.18
 
