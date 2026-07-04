@@ -1,12 +1,13 @@
 %global _hardened_build 1
 Name:           etherape
-Version:        0.9.18
+Version:        0.9.22
 Release:        1%{?dist}
 Summary:        Graphical network monitor for Unix
 
-License:        GPLv2+
-URL:            http://etherape.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/sourceforge/etherape/%{name}-%{version}.tar.gz
+License:        GPL-2.0-or-later
+URL:            https://etherape.sourceforge.net/
+ExclusiveArch:  x86_64 aarch64
+Source0:        https://downloads.sourceforge.net/project/etherape/etherape/%{version}/%{name}-%{version}.tar.gz
 Source1:        etherape.pam
 Source2:        etherape.console
 
@@ -21,16 +22,16 @@ Requires(postun): scrollkeeper
 EtherApe is a graphical network monitor modeled after etherman.
 
 %prep
-%setup -q
+%autosetup -p1
 
 
 %build
 %configure --bindir=%{_sbindir}
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=%{buildroot}
+%make_install
 
 mkdir -p %{buildroot}/%{_sysconfdir}/pam.d
 install -m 644 %{SOURCE1} %{buildroot}/%{_sysconfdir}/pam.d/etherape
@@ -44,7 +45,8 @@ desktop-file-install --dir %{buildroot}%{_datadir}/applications \
     %{buildroot}%{_datadir}/applications/etherape.desktop
 
 %files -f %{name}.lang
-%doc ABOUT-NLS AUTHORS ChangeLog COPYING FAQ NEWS OVERVIEW README README.bugs TODO
+%license COPYING
+%doc ABOUT-NLS AUTHORS ChangeLog FAQ NEWS OVERVIEW README README.bugs TODO
 
 
 %{_bindir}/etherape
@@ -70,6 +72,13 @@ scrollkeeper-update -q || :
 
 
 %changelog
+* Sat Jul 04 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.22-1
+- Version: 0.9.18 → 0.9.22 (latest SourceForge release)
+- Source0: http→https, fix SourceForge path to /project/etherape/etherape/%{version}/; verified 302→200
+- URL: http→https
+- SPDX: GPLv2+ → GPL-2.0-or-later; add ExclusiveArch: x86_64 aarch64
+- %%autosetup -p1, %%make_build, %%make_install, %%license COPYING
+
 * Fri May 22 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.18-1
 - Fix spec violations: %global for constants, use %{buildroot}
 
