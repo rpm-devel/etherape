@@ -72,6 +72,18 @@ scrollkeeper-update -q || :
 
 
 %changelog
+* Sat Jul 05 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.22-1
+- Multi-distro audit: ExclusiveArch already correct, no noarch issue, no
+  stray commented BuildArch line, no EL7 macro fallback needed
+- Verified BuildRequires against openSUSE/SLES pkg repos: libpcap-devel,
+  gettext, desktop-file-utils are identically named, no guard needed
+- libglade2-devel, libgnomeui-devel, gnome-doc-utils, scrollkeeper are not
+  simple SUSE renames — they are GNOME2-era packages that are EOL/dropped
+  or architecturally replaced (rarian/rarian-scrollkeeper-compat) on modern
+  distros generally, not a RHEL/Fedora-vs-SUSE naming divergence; a
+  %%global name-swap guard cannot fix an availability/EOL problem, so left
+  unguarded pending a real upstream EOL decision for this package
+
 * Sat Jul 04 2026 CasjaysDev <rpm-devel@casjaysdev.pro> - 0.9.22-1
 - Version: 0.9.18 → 0.9.22 (latest SourceForge release)
 - Source0: http→https, fix SourceForge path to /project/etherape/etherape/%{version}/; verified 302→200
